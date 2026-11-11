@@ -1,0 +1,145 @@
+{
+ "debug": {
+  "justetf_keys": [
+   "dtdAmt",
+   "dtdPrc",
+   "latestQuote",
+   "latestQuoteDate",
+   "previousQuote",
+   "previousQuoteDate",
+   "quoteLowHigh",
+   "quoteTradingVenue"
+  ],
+  "onvista_quote_keys": [
+   "addendum",
+   "ask",
+   "bid",
+   "codeQualityPrice",
+   "codeQualityPriceBidAsk",
+   "datetimeAsk",
+   "datetimeBid",
+   "datetimeHigh",
+   "datetimeHighPrice1Year",
+   "datetimeLast",
+   "datetimeLow",
+   "datetimeLowPrice1Year",
+   "datetimeOpen",
+   "datetimePreviousLast",
+   "displayUnit",
+   "entityType",
+   "entityValue",
+   "expires",
+   "high",
+   "highPrice1Year",
+   "idInstrument",
+   "idTradingSchedule",
+   "idTypePrice",
+   "isoCurrency",
+   "last",
+   "low",
+   "lowPrice1Year",
+   "market",
+   "open",
+   "performance",
+   "performance1Year",
+   "performance1YearPct",
+   "performancePct",
+   "prePostTrading",
+   "previousLast",
+   "unitType",
+   "volume4Weeks",
+   "volumeAsk",
+   "volumeBid"
+  ]
+ },
+ "errors": {
+  "A2N812": [
+   "justETF: kein gültiger Kurs ({'price': None, 'date': None, 'prev': None, 'prevDate': None, 'venue': 'justETF', 'source': 'justETF'})"
+  ]
+ },
+ "lastTradingDay": "2026-11-11",
+ "prices": {
+  "A0F5UF": {
+   "date": "2026-11-11",
+   "isin": "DE000A0F5UF5",
+   "prev": 241.35,
+   "prevDate": "2026-11-10",
+   "price": 247.1,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "A111X9": {
+   "date": "2026-11-11",
+   "isin": "IE00BKM4GZ66",
+   "prev": 44.53,
+   "prevDate": "2026-11-10",
+   "price": 45.76,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "A1JJTD": {
+   "date": "2026-11-11",
+   "isin": "IE00B3YLTY66",
+   "prev": 11.54,
+   "prevDate": "2026-11-10",
+   "price": 11.72,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "A1JX52": {
+   "date": "2026-11-11",
+   "isin": "IE00B3RBWM25",
+   "prev": 161.95,
+   "prevDate": "2026-11-10",
+   "price": 164.39,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "A1XB5U": {
+   "date": "2026-11-11",
+   "isin": "IE00BJ0KDQ92",
+   "prev": 140.87,
+   "prevDate": "2026-11-10",
+   "price": 142.72,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "A2N812": {
+   "date": "2026-11-11",
+   "isin": "DE000A2N8127",
+   "prev": 874.012,
+   "prevDate": "2026-11-10",
+   "price": 905.019,
+   "source": "onvista",
+   "venue": "LS Exchange"
+  },
+  "A2TT3D": {
+   "date": "2026-11-11",
+   "isin": "CH0445689208",
+   "prev": 11.6,
+   "prevDate": "2026-11-10",
+   "price": 11.74,
+   "source": "justETF",
+   "venue": "XETRA"
+  },
+  "ETH": {
+   "date": "2026-11-11",
+   "isin": "ETH",
+   "prev": 1836.46,
+   "prevDate": "2026-11-10",
+   "price": 1851.445,
+   "source": "Coinbase",
+   "venue": "Coinbase"
+  },
+  "EWG2LD": {
+   "date": "2026-11-11",
+   "isin": "DE000EWG2LD7",
+   "prev": 118.67,
+   "prevDate": "2026-11-10",
+   "price": 119.46,
+   "source": "justETF",
+   "venue": "STUTTGART"
+  }
+ },
+ "updatedAt": "2026-11-11T14:56:12+01:00"
+}
