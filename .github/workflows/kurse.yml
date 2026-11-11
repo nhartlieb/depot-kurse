@@ -1,0 +1,34 @@
+name: Kurse abrufen
+
+on:
+  schedule:
+    # Werktags ca. alle 30 Min. von 7 bis 23 Uhr (Zeiten in UTC)
+    - cron: '7,37 6-21 * * 1-5'
+    # Wochenende: nur Ethereum bewegt sich, alle 4 Std.
+    - cron: '23 6,10,14,18 * * 0,6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kurse
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Kurse holen
+        run: python3 fetch_quotes.py
+      - name: Speichern
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quotes.json
+          if git diff --cached --quiet; then echo "keine Änderung"; exit 0; fi
+          git commit -m "Kurse $(TZ=Europe/Berlin date '+%d.%m.%Y %H:%M')"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1
