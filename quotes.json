@@ -10,46 +10,124 @@
    "quoteLowHigh",
    "quoteTradingVenue"
   ],
-  "onvista_quote_keys": [
-   "addendum",
-   "ask",
-   "bid",
-   "codeQualityPrice",
-   "codeQualityPriceBidAsk",
-   "datetimeAsk",
-   "datetimeBid",
-   "datetimeHigh",
-   "datetimeHighPrice1Year",
-   "datetimeLast",
-   "datetimeLow",
-   "datetimeLowPrice1Year",
-   "datetimeOpen",
-   "datetimePreviousLast",
-   "displayUnit",
-   "entityType",
-   "entityValue",
+  "onvista_markets_DE000A2N8127": [
+   [
+    "Stuttgart",
+    908.1,
+    "2026-11-11T13:45:24.415+00:00",
+    883.8,
+    "2026-11-10T20:55:43.267+00:00"
+   ],
+   [
+    "gettex",
+    919.358,
+    "2026-11-11T13:56:46.423+00:00",
+    870.413,
+    "2026-11-10T21:47:03.507+00:00"
+   ],
+   [
+    "Tradegate BSX",
+    917.985,
+    "2026-11-11T13:22:03.904+00:00",
+    886.879,
+    "2026-11-10T21:06:00.975+00:00"
+   ],
+   [
+    "Swiss Exchange",
+    899.5,
+    "2026-11-09T16:35:15.025+00:00",
+    886.0,
+    "2026-11-06T16:35:09.106+00:00"
+   ],
+   [
+    "LS Exchange",
+    905.231,
+    "2026-11-11T13:56:50.865+00:00",
+    874.012,
+    "2026-11-10T21:57:02.734+00:00"
+   ],
+   [
+    "Baader Trading",
+    910.425,
+    "2026-11-11T13:56:39.627+00:00",
+    882.739,
+    "2026-11-10T21:59:59.544+00:00"
+   ],
+   [
+    "Lang & Schwarz",
+    905.231,
+    "2026-11-11T13:56:50.865+00:00",
+    874.012,
+    "2026-11-10T21:57:02.734+00:00"
+   ],
+   [
+    "Frankfurt",
+    901.0,
+    "2026-11-11T13:36:42.360+00:00",
+    865.75,
+    "2026-11-10T18:36:59.040+00:00"
+   ],
+   [
+    "Hamburg",
+    892.609,
+    "2026-11-11T07:03:19.820+00:00",
+    893.55,
+    "2026-11-10T07:04:29.630+00:00"
+   ],
+   [
+    "Quotrix",
+    916.692,
+    "2026-11-11T11:07:25.809+00:00",
+    909.566,
+    "2026-11-10T15:01:20.528+00:00"
+   ],
+   [
+    "Düsseldorf",
+    903.476,
+    "2026-11-11T13:15:02.640+00:00",
+    873.401,
+    "2026-11-10T20:45:02.580+00:00"
+   ],
+   [
+    "München",
+    887.225,
+    "2026-11-11T07:06:48.670+00:00",
+    881.866,
+    "2026-11-10T07:01:49.870+00:00"
+   ],
+   [
+    "Stuttgart TradeREBEL",
+    908.85,
+    "2026-11-11T13:55:03.370+00:00",
+    883.85,
+    "2026-11-10T20:53:36.912+00:00"
+   ],
+   [
+    "KVG",
+    890.25,
+    "2026-11-10T07:00:00.000+00:00",
+    878.33,
+    "2026-11-09T07:00:00.000+00:00"
+   ],
+   [
+    "Stuttgart FXplus",
+    907.1,
+    "2026-11-11T11:34:02.556+00:00",
+    882.85,
+    "2026-11-10T11:06:02.474+00:00"
+   ]
+  ],
+  "onvista_snapshot_keys": [
+   "chart",
+   "cnPerformance",
    "expires",
-   "high",
-   "highPrice1Year",
-   "idInstrument",
-   "idTradingSchedule",
-   "idTypePrice",
-   "isoCurrency",
-   "last",
-   "low",
-   "lowPrice1Year",
-   "market",
-   "open",
-   "performance",
-   "performance1Year",
-   "performance1YearPct",
-   "performancePct",
-   "prePostTrading",
-   "previousLast",
-   "unitType",
-   "volume4Weeks",
-   "volumeAsk",
-   "volumeBid"
+   "instrument",
+   "keywords",
+   "profile",
+   "quote",
+   "quoteList",
+   "relatedInstrumentItemList",
+   "type"
   ]
  },
  "errors": {
@@ -109,7 +187,7 @@
    "isin": "DE000A2N8127",
    "prev": 874.012,
    "prevDate": "2026-11-10",
-   "price": 905.019,
+   "price": 905.231,
    "source": "onvista",
    "venue": "LS Exchange"
   },
@@ -127,7 +205,7 @@
    "isin": "ETH",
    "prev": 1836.46,
    "prevDate": "2026-11-10",
-   "price": 1851.445,
+   "price": 1851.545,
    "source": "Coinbase",
    "venue": "Coinbase"
   },
@@ -141,5 +219,5 @@
    "venue": "STUTTGART"
   }
  },
- "updatedAt": "2026-11-11T14:56:12+01:00"
+ "updatedAt": "2026-11-11T14:56:48+01:00"
 }
