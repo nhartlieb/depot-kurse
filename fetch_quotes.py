@@ -160,7 +160,14 @@ def src_onvista(isin):
     et, ev = inst.get("entityType"), inst.get("entityValue")
     snap = get_json(f"https://api.onvista.de/api/v1/instruments/{et}/{ev}/snapshot")
     q = snap.get("quote") or {}
-    debug.setdefault("onvista_quote_keys", sorted(q.keys()))
+    debug.setdefault("onvista_snapshot_keys", sorted(snap.keys()))
+    ql = snap.get("quoteList")
+    if isinstance(ql, dict):
+        ql = ql.get("list")
+    if isinstance(ql, list):
+        debug[f"onvista_markets_{isin}"] = [
+            [(x.get("market") or {}).get("name"), x.get("last"), x.get("datetimeLast"),
+             x.get("previousLast"), x.get("datetimePreviousLast")] for x in ql[:15]]
     price = num(q.get("last"))
     qdate = to_day(q.get("datetimeLast"))
     prev = num(q.get("previousLast") or q.get("prevClose") or q.get("previousClose"))
