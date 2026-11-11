@@ -7,6 +7,10 @@ on:
     # Wochenende: nur Ethereum bewegt sich, alle 4 Std.
     - cron: '23 6,10,14,18 * * 0,6'
   workflow_dispatch:
+  # Nach Änderungen am Abruf sofort einmal laufen
+  push:
+    branches: [main]
+    paths: ['fetch_quotes.py', '.github/workflows/kurse.yml']
 
 permissions:
   contents: write
