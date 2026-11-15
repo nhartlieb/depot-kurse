@@ -201,11 +201,11 @@
    "venue": "XETRA"
   },
   "ETH": {
-   "date": "2026-11-14",
+   "date": "2026-11-15",
    "isin": "ETH",
-   "prev": 1750.58,
-   "prevDate": "2026-11-13",
-   "price": 1662.7,
+   "prev": 1607.13,
+   "prevDate": "2026-11-14",
+   "price": 1656.23,
    "source": "Coinbase",
    "venue": "Coinbase"
   },
@@ -219,5 +219,5 @@
    "venue": "STUTTGART"
   }
  },
- "updatedAt": "2026-11-14T20:15:30+01:00"
+ "updatedAt": "2026-11-15T15:06:32+01:00"
 }
