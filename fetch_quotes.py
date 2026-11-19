@@ -172,6 +172,14 @@ def src_onvista(isin):
         debug[f"onvista_markets_{isin}"] = [
             [(x.get("market") or {}).get("name"), x.get("last"), x.get("datetimeLast"),
              x.get("previousLast"), x.get("datetimePreviousLast")] for x in ql[:15]]
+    # Neuesten EUR-Kurs über alle Börsenplätze nehmen (der Standardplatz kann stehen bleiben)
+    if isinstance(ql, list):
+        cands = [x for x in ql if num(x.get("last")) and x.get("datetimeLast")
+                 and (x.get("isoCurrency") or "").upper() == "EUR"]
+        if cands:
+            newest = max(cands, key=lambda x: x["datetimeLast"])
+            if newest.get("datetimeLast", "") > (q.get("datetimeLast") or ""):
+                q = newest
     price = num(q.get("last"))
     qdate = to_day(q.get("datetimeLast"))
     prev = num(q.get("previousLast") or q.get("prevClose") or q.get("previousClose"))
