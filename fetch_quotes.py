@@ -32,7 +32,10 @@ SECURITIES = {
     "A2TT3D": "CH0445689208",  # 21Shares Crypto Basket
     "EWG2LD": "DE000EWG2LD7",  # EUWAX Gold II
     "A2N812": "DE000A2N8127",  # BIT Global Technology Leaders (Fonds)
+    "A42SXH": "US03703U1079",  # Anthropic Class A (Aktie, Xetra 1ANT)
 }
+# Einzelaktien (ohne justETF-Abfrage)
+STOCKS = {"A42SXH"}
 # Bevorzugte Yahoo-Symbole (Xetra / Stuttgart); weitere werden per ISIN-Suche ergänzt
 YAHOO_HINTS = {
     "A1JJTD": ["SPYI.DE"],
@@ -40,6 +43,7 @@ YAHOO_HINTS = {
     "A1XB5U": ["XDWD.DE"],
     "A111X9": ["IS3N.DE"],
     "A0F5UF": ["EXXT.DE"],
+    "A42SXH": ["1ANT.DE"],
 }
 
 errors = {}
@@ -282,8 +286,8 @@ def main():
 
     prices = {}
     for pid, isin in SECURITIES.items():
-        q = best_of(pid, [
-            ("justETF", lambda i=isin: src_justetf(i)),
+        q = best_of(pid, ([] if pid in STOCKS else [
+            ("justETF", lambda i=isin: src_justetf(i))]) + [
             ("onvista", lambda i=isin: src_onvista(i)),
             ("Yahoo", lambda p=pid, i=isin: src_yahoo(p, i)),
         ], target)
