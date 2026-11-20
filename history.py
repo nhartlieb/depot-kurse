@@ -68,11 +68,11 @@ def h_onvista(isin, start):
     mk.sort()
     debug[f"onvista_notations_{isin}"] = mk[:6]
     last_err = None
+    start = max(start, date.today() - timedelta(days=365 * 5))
     for _, name, nid in mk[:4] or [(0, "default", None)]:
         try:
-            q = {"resolution": "1D", "startDate": start.isoformat(), "endDate": date.today().isoformat()}
-            if nid:
-                q["idNotation"] = nid
+            q = {"idNotation": nid, "resolution": "1D", "startDate": start.isoformat(),
+                 "endDate": date.today().isoformat()}
             h = get_json(f"https://api.onvista.de/api/v1/instruments/{et}/{ev}/chart_history?" + urllib.parse.urlencode(q))
             ts, last = h.get("datetimeLast") or [], h.get("last") or []
             rows = clean((to_day(t), num(v)) for t, v in zip(ts, last))
@@ -82,6 +82,7 @@ def h_onvista(isin, start):
             last_err = f"{name}: {len(rows)} Punkte, keys {sorted(h.keys())[:12]}"
         except Exception as e:  # noqa: BLE001
             last_err = f"{name}: {e}"
+            log(isin, f"onvista {name}: {e}")
     raise ValueError(f"onvista: {last_err}")
 
 
