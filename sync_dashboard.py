@@ -88,6 +88,7 @@ def main():
     ap.add_argument("--versions", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--history", help="history.json mit Tagesschlusskursen (optional)")
+    ap.add_argument("--intraday", help="intraday.json mit 30-Minuten-Kursen (optional)")
     a = ap.parse_args()
 
     now = datetime.now(TZ)
@@ -228,6 +229,29 @@ def main():
             add("set", "prices", pid, {"source": "Aktualisierung", "enc": data.get("enc", ""), "recent": recent})
         else:
             add("update", "prices", pid, data)
+
+    # Intraday-Kurse (Wochen- und Tagesansicht), kompakt: "t0|dt:v,..." mit t in Minuten (Unix/60)
+    if a.intraday:
+        idoc = load(a.intraday, {}) or {}
+        enc_i = {}
+        for pid, rows in (idoc.get("series") or {}).items():
+            rows = [r for r in rows if isinstance(r, list) and len(r) == 2 and r[1]]
+            if not rows:
+                continue
+            t0, prev, parts = rows[0][0] // 60, None, []
+            for t, v in rows:
+                m = t // 60
+                parts.append(f"{0 if prev is None else m - prev}:{v:g}")
+                prev = m
+            enc_i[pid] = f"{t0}|" + ",".join(parts)
+        if enc_i:
+            old_i = load(os.path.join(a.db, "intraday", "latest.json"), None)
+            add("set", "intraday", "latest", {"asOf": idoc.get("asOf"), "series": enc_i, "src": idoc.get("src") or {}})
+            if old_i is None:
+                versions.pop("intraday/latest", None)
+                writes[-1].pop("if_version", None)
+            elif "if_version" not in writes[-1]:
+                print("FEHLER: version fehlt in versions.json für intraday/latest")
 
     missing = [f"{w['collection']}/{w['doc_id']}" for w in writes if "if_version" not in w
                and ((w["collection"] == "quotes" and latest) or (w["collection"] == "history" and hist_today)

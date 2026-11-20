@@ -31,7 +31,8 @@ def yahoo_bars(sym, interval="30m", rng="1mo"):
     r = d["chart"]["result"][0]
     q = (r.get("indicators", {}).get("quote") or [{}])[0]
     closes = q.get("close") or []
-    rows = [[int(t), round(float(c), 4)] for t, c in zip(r.get("timestamp") or [], closes) if c is not None]
+    step = {"30m": 1800, "60m": 3600, "15m": 900}.get(interval, 0)  # Zeitstempel = Ende des Intervalls
+    rows = [[int(t) + step, round(float(c), 4)] for t, c in zip(r.get("timestamp") or [], closes) if c is not None]
     return (r["meta"].get("currency") or "").upper(), rows
 
 
