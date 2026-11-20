@@ -28,7 +28,7 @@ jobs:
       - name: Kurse holen
         run: python3 fetch_quotes.py
       - name: Tageskurse (höchstens alle 6 Std.)
-        run: python3 history.py || echo 'Historie fehlgeschlagen'
+        run: python3 history.py ${{ github.event_name != 'schedule' && '--force' || '' }} || echo 'Historie fehlgeschlagen'
       - name: Speichern
         run: |
           git config user.name "github-actions[bot]"
