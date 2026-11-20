@@ -71,9 +71,9 @@ def h_onvista(isin, start):
     start = max(start, date.today() - timedelta(days=365 * 5))
     for _, name, nid in mk[:4] or [(0, "default", None)]:
         try:
-            q = {"idNotation": nid, "resolution": "1D", "startDate": start.isoformat(),
-                 "endDate": date.today().isoformat()}
-            h = get_json(f"https://api.onvista.de/api/v1/instruments/{et}/{ev}/chart_history?" + urllib.parse.urlencode(q))
+            q = {"idNotation": nid, "range": "Y5" if (date.today() - start).days > 370 else "Y1",
+                 "startDate": start.isoformat()}
+            h = get_json(f"https://api.onvista.de/api/v1/instruments/{et}/{ev}/eod_history?" + urllib.parse.urlencode(q))
             ts, last = h.get("datetimeLast") or [], h.get("last") or []
             rows = clean((to_day(t), num(v)) for t, v in zip(ts, last))
             if len(rows) >= 2:
