@@ -19,7 +19,8 @@ from zoneinfo import ZoneInfo
 
 TZ = ZoneInfo("Europe/Berlin")
 MAX_POINTS = 48
-MAX_RECENT = 600
+MAX_RECENT = 2500
+ENC_KEEP_RECENT_DAYS = 60
 
 
 def load(path, default=None):
@@ -46,12 +47,47 @@ def prev_weekday(d):
     return d
 
 
+def encode(rows):
+    """[[YYYY-MM-DD, v], ...] -> 'start|0:v,dd:v,...' (dd = Tage seit dem vorigen Punkt)."""
+    from datetime import date as _d
+    # ausdünnen wie die übrigen Reihen: älter als 5 Jahre monatlich, 1–5 Jahre wöchentlich, danach täglich
+    last = _d.fromisoformat(rows[-1][0])
+    thin, keep_prev = [], None
+    for i, (d_, v) in enumerate(rows):
+        dd = _d.fromisoformat(d_)
+        age = (last - dd).days
+        gap = 30 if age > 5 * 365 else 7 if age > 365 else 1
+        if keep_prev is None or (dd - keep_prev).days >= gap or i == len(rows) - 1:
+            thin.append((d_, v))
+            keep_prev = dd
+    rows = thin
+    out, prev = [], None
+    for d_, v in rows:
+        dd = _d.fromisoformat(d_)
+        out.append(f"{0 if prev is None else (dd - prev).days}:{round(float(v), 4):g}")
+        prev = dd
+    return rows[0][0] + "|" + ",".join(out)
+
+
+def enc_last_day(enc):
+    if not enc or "|" not in enc:
+        return None
+    from datetime import date as _d
+    d0, body = enc.split("|", 1)
+    d = _d.fromisoformat(d0)
+    for part in body.split(","):
+        if ":" in part:
+            d += timedelta(days=int(part.split(":")[0]))
+    return d.isoformat()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", required=True)
     ap.add_argument("--quotes", required=True)
     ap.add_argument("--versions", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--history", help="history.json mit Tagesschlusskursen (optional)")
     a = ap.parse_args()
 
     now = datetime.now(TZ)
@@ -153,18 +189,45 @@ def main():
 
     add("set", "quotes", "latest", {"updatedAt": now.isoformat(timespec="seconds"), "prices": new})
     add("set", "history", tkey, hdoc)
-    for pid in updated:
-        e = new[pid]
-        doc = prices_docs.get(pid)
-        if doc is None:
-            add("set", "prices", pid, {"source": "Aktualisierung", "recent": [[e["date"], e["price"]]], "enc": ""})
+    hist_series = ((load(a.history, {}) or {}).get("series") or {}) if a.history else {}
+    for pid in positions:
+        e = new.get(pid) if pid in updated else None
+        series = [r for r in (hist_series.get(pid) or []) if isinstance(r, list) and len(r) == 2 and r[1]]
+        if e is None and not series:
             continue
-        recent = [r for r in (doc.get("recent") or []) if isinstance(r, list) and len(r) == 2]
-        if recent and recent[-1][0] == e["date"]:
-            recent[-1] = [e["date"], e["price"]]
-        elif not recent or recent[-1][0] < e["date"]:
-            recent.append([e["date"], e["price"]])
-        add("update", "prices", pid, {"recent": recent[-MAX_RECENT:]})
+        doc = prices_docs.get(pid)
+        enc = (doc or {}).get("enc") or ""
+        data = {}
+        cur = {r[0]: r[1] for r in ((doc or {}).get("recent") or []) if isinstance(r, list) and len(r) == 2}
+        new_enc = None
+        if not enc and len(series) > 30:
+            # Fehlende Langfrist-Historie einmalig aus den Tagesschlusskursen bilden
+            cut = (today - timedelta(days=ENC_KEEP_RECENT_DAYS)).isoformat()
+            old_part = [r for r in series if r[0] < cut]
+            if len(old_part) > 10:
+                new_enc = encode(old_part)
+                enc_end = old_part[-1][0]
+        if new_enc is None:
+            enc_end = enc_last_day(enc)
+        # Tagesschlusskurse füllen Lücken und ersetzen Zwischenstände vergangener Tage
+        for d_, v in series:
+            if d_ < tkey and (enc_end is None or d_ > enc_end):
+                cur[d_] = v
+        if e:
+            cur[e["date"]] = e["price"]
+        recent = sorted([d_, v] for d_, v in cur.items() if enc_end is None or d_ > enc_end)[-MAX_RECENT:]
+        old_recent = sorted([r[0], r[1]] for r in ((doc or {}).get("recent") or []) if isinstance(r, list) and len(r) == 2)
+        if new_enc is not None:
+            data["enc"] = new_enc
+            data["source"] = ((doc or {}).get("source") or "Aktualisierung") + " + Tagesschlusskurse (GitHub)"
+        if recent != old_recent or data:
+            data["recent"] = recent
+        if not data:
+            continue
+        if doc is None:
+            add("set", "prices", pid, {"source": "Aktualisierung", "enc": data.get("enc", ""), "recent": recent})
+        else:
+            add("update", "prices", pid, data)
 
     missing = [f"{w['collection']}/{w['doc_id']}" for w in writes if "if_version" not in w
                and ((w["collection"] == "quotes" and latest) or (w["collection"] == "history" and hist_today)
