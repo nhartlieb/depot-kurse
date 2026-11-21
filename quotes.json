@@ -48,8 +48,8 @@
    ],
    [
     "Baader Trading",
-    788.589,
-    "2026-11-21T14:39:24.532+00:00",
+    787.734,
+    "2026-11-21T17:33:31.043+00:00",
     771.4815,
     "2026-11-20T21:59:21.571+00:00"
    ],
@@ -287,7 +287,7 @@
    "isin": "DE000A2N8127",
    "prev": 771.4815,
    "prevDate": "2026-11-20",
-   "price": 788.589,
+   "price": 787.734,
    "source": "onvista",
    "venue": "Baader Trading"
   },
@@ -305,16 +305,16 @@
    "isin": "US03703U1079",
    "prev": 80.27,
    "prevDate": "2026-11-20",
-   "price": 81.42,
+   "price": 80.42,
    "source": "onvista",
    "venue": "Baader Trading"
   },
   "ETH": {
-   "date": "2026-11-21",
+   "date": "2026-11-22",
    "isin": "ETH",
    "prev": 1478.24,
-   "prevDate": "2026-11-20",
-   "price": 1539.87,
+   "prevDate": "2026-11-21",
+   "price": 1534.43,
    "source": "Coinbase",
    "venue": "Coinbase"
   },
@@ -328,5 +328,5 @@
    "venue": "STUTTGART"
   }
  },
- "updatedAt": "2026-11-21T15:48:00+01:00"
+ "updatedAt": "2026-11-22T00:28:29+01:00"
 }
