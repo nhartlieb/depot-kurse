@@ -312,9 +312,9 @@
   "ETH": {
    "date": "2026-11-22",
    "isin": "ETH",
-   "prev": 1478.24,
+   "prev": 1536.45,
    "prevDate": "2026-11-21",
-   "price": 1534.43,
+   "price": 1557.11,
    "source": "Coinbase",
    "venue": "Coinbase"
   },
@@ -328,5 +328,5 @@
    "venue": "STUTTGART"
   }
  },
- "updatedAt": "2026-11-22T00:28:29+01:00"
+ "updatedAt": "2026-11-22T15:44:12+01:00"
 }
