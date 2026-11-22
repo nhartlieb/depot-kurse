@@ -301,20 +301,20 @@
    "venue": "XETRA"
   },
   "A42SXH": {
-   "date": "2026-11-21",
+   "date": "2026-11-22",
    "isin": "US03703U1079",
-   "prev": 80.27,
-   "prevDate": "2026-11-20",
-   "price": 80.42,
+   "prev": 80.19,
+   "prevDate": "2026-11-21",
+   "price": 83.47,
    "source": "onvista",
-   "venue": "Baader Trading"
+   "venue": "Lang & Schwarz"
   },
   "ETH": {
-   "date": "2026-11-22",
+   "date": "2026-11-23",
    "isin": "ETH",
    "prev": 1536.45,
-   "prevDate": "2026-11-21",
-   "price": 1557.11,
+   "prevDate": "2026-11-22",
+   "price": 1571.1,
    "source": "Coinbase",
    "venue": "Coinbase"
   },
@@ -328,5 +328,5 @@
    "venue": "STUTTGART"
   }
  },
- "updatedAt": "2026-11-22T15:44:12+01:00"
+ "updatedAt": "2026-11-23T00:40:03+01:00"
 }
