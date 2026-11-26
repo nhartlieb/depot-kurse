@@ -10,7 +10,7 @@ on:
   # Nach Änderungen am Abruf sofort einmal laufen
   push:
     branches: [main]
-    paths: ['fetch_quotes.py', 'history.py', 'intraday.py', '.github/workflows/kurse.yml']
+    paths: ['fetch_quotes.py', 'history.py', 'intraday.py', '.github/workflows/kurse.yml', 'trigger/**']
 
 permissions:
   contents: write
