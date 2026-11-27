@@ -89,6 +89,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--history", help="history.json mit Tagesschlusskursen (optional)")
     ap.add_argument("--intraday", help="intraday.json mit 30-Minuten-Kursen (optional)")
+    ap.add_argument("--stocks", help="stocks.json mit Kursen der Fondsbestandteile (optional)")
     a = ap.parse_args()
 
     now = datetime.now(TZ)
@@ -252,6 +253,46 @@ def main():
                 writes[-1].pop("if_version", None)
             elif "if_version" not in writes[-1]:
                 print("FEHLER: version fehlt in versions.json für intraday/latest")
+
+    # Durchschau: Gewichte aus den Factsheets mit der Kursentwicklung seit dem Stichtag fortschreiben
+    # w_heute = w_Stichtag × (Aktie heute / Aktie Stichtag) / (Fonds heute / Fonds Stichtag), alles in EUR
+    if a.stocks:
+        st = (load(a.stocks, {}) or {}).get("eur") or {}
+
+        def at(rows, day):
+            best = None
+            for d_, v in rows:
+                if d_ <= day:
+                    best = v
+                else:
+                    break
+            return best
+
+        lt, base = {}, {}
+        for pid, p in positions.items():
+            hold, d0 = p.get("holdings") or [], p.get("holdingsAsOf")
+            if not hold or not d0 or d0 == "-":
+                continue
+            fser = [r for r in (hist_series.get(pid) or []) if isinstance(r, list) and len(r) == 2]
+            f0, f1 = at(fser, d0), (new.get(pid) or {}).get("price")
+            if not f0 or not f1:
+                continue
+            rf = f1 / f0
+            hw = []
+            for h in hold:
+                srow = st.get(h.get("n"))
+                s0 = at(srow, d0) if srow else None
+                w = h["w"] * (srow[-1][1] / s0) / rf if s0 else h["w"]
+                hw.append({"n": h["n"], "w": round(w, 3), "w0": h["w"]})
+            lt[pid], base[pid] = hw, d0
+        if lt:
+            old_l = load(os.path.join(a.db, "lookthrough", "latest.json"), None)
+            add("set", "lookthrough", "latest", {"asOf": tkey, "base": base, "pos": lt,
+                                                 "method": "Factsheet-Gewichte mit Kursentwicklung fortgeschrieben"})
+            if old_l is None:
+                writes[-1].pop("if_version", None)
+            elif "if_version" not in writes[-1]:
+                print("FEHLER: version fehlt in versions.json für lookthrough/latest")
 
     missing = [f"{w['collection']}/{w['doc_id']}" for w in writes if "if_version" not in w
                and ((w["collection"] == "quotes" and latest) or (w["collection"] == "history" and hist_today)
